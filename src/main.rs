@@ -17,6 +17,8 @@ use bevy::{
     window::{Window, WindowPlugin, WindowResolution},
 };
 
+use crate::{sim::SimPlugin, states::StatesPlugin};
+
 pub struct HelloPlugin;
 
 fn main() {
@@ -30,5 +32,7 @@ fn main() {
             ..default()
         }))
         .insert_resource(ClearColor(Color::srgb(0.5, 0.1, 0.1)))
+        .add_plugins(StatesPlugin)
+        .add_plugins(SimPlugin)
         .run();
 }

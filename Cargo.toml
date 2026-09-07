@@ -7,7 +7,7 @@ edition = "2024"
 bevy = { version = "=0.19.1", features = ["dynamic_linking"] }
 serde = { version = "1", features = ["derive"]}
 ron = "0.12"
-bevy_common_assets = { version = "0.17", feature = ["ron"]}
+bevy_common_assets = { version = "0.17", features = ["ron"]}
 bevy_rand = { version = "0.15", features = ["wyrand"]}
 directories = "6"
 
