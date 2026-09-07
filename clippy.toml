@@ -1,0 +1,4 @@
+disallowed-methods = [
+    "rand::random",
+    "rand::thread_rng"
+]
