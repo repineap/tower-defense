@@ -8,12 +8,14 @@ use bevy_common_assets::ron::RonAssetPlugin;
 
 use crate::sim::defs::{MapDef, MapLoadingHandle};
 use crate::sim::grid::Grid;
-use crate::states::AppState::{self, MapLoading};
+use crate::sim::path::{Path, find_path};
+use crate::states::AppState;
 
 pub struct SimPlugin;
 
 mod defs;
 mod grid;
+mod path;
 
 impl Plugin for SimPlugin {
     fn build(&self, app: &mut bevy::app::App) {
@@ -23,10 +25,7 @@ impl Plugin for SimPlugin {
             Update,
             generate_grid_from_loaded_ron_map.run_if(in_state(AppState::MapLoading)),
         );
-        app.add_systems(
-            Update,
-            print_level_when_ready.run_if(in_state(AppState::MapReady)),
-        );
+        app.add_systems(Update, compute_and_print_path);
     }
 }
 
@@ -46,22 +45,22 @@ fn generate_grid_from_loaded_ron_map(
     if *app_state.as_ref() == AppState::MapLoading {
         if let Some(handle_res) = level_handle {
             if let Some(level_data) = levels.get(&handle_res.0) {
-                commands.insert_resource(Grid::new(
-                    level_data.width,
-                    level_data.height,
-                    &level_data.rows,
-                ));
+                let grid = Grid::new(level_data.width, level_data.height, &level_data.rows);
+                let grid_path = find_path(&grid);
+                commands.insert_resource(grid);
+                if let Ok(grid_paths) = grid_path {
+                    commands.insert_resource(grid_paths);
+                }
                 next_map_state.set(AppState::MapReady)
             }
         }
     }
 }
 
-fn print_level_when_ready(
-    mut commands: Commands,
-    grid: Res<Grid>,
-    mut next_map_state: ResMut<NextState<AppState>>,
-) {
-    println!("{:?}", grid.as_ref());
-    next_map_state.set(AppState::MapPrinted)
+fn compute_and_print_path(mut commands: Commands, path: Option<Res<Path>>) {
+    if let Some(path_ref) = path {
+        println!("{:?}", path_ref.as_ref())
+    } else {
+        println!("NO PATH")
+    }
 }

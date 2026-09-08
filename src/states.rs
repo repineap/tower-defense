@@ -10,7 +10,6 @@ pub enum AppState {
     #[default]
     MapLoading,
     MapReady,
-    MapPrinted,
 }
 
 impl Plugin for StatesPlugin {

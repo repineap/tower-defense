@@ -1,9 +1,40 @@
 use bevy::ecs::resource::Resource;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq, Hash, Clone, Copy)]
 pub struct GridPos {
     x: i32,
     y: i32,
+}
+
+impl GridPos {
+    pub fn new(x: i32, y: i32) -> Self {
+        GridPos { x, y }
+    }
+
+    pub fn left_pos(&self) -> GridPos {
+        GridPos {
+            x: self.x - 1,
+            y: self.y,
+        }
+    }
+    pub fn up_pos(&self) -> GridPos {
+        GridPos {
+            x: self.x,
+            y: self.y + 1,
+        }
+    }
+    pub fn right_pos(&self) -> GridPos {
+        GridPos {
+            x: self.x + 1,
+            y: self.y,
+        }
+    }
+    pub fn down_pos(&self) -> GridPos {
+        GridPos {
+            x: self.x,
+            y: self.y - 1,
+        }
+    }
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -30,12 +61,12 @@ impl From<char> for TileKind {
 
 #[derive(Resource, Debug)]
 pub struct Grid {
-    width: i32,
-    height: i32,
-    tiles: Vec<TileKind>,
-    spawns: Vec<GridPos>,
-    bases: Vec<GridPos>,
-    occupied: Vec<bool>,
+    pub width: i32,
+    pub height: i32,
+    pub tiles: Vec<TileKind>,
+    pub spawns: Vec<GridPos>,
+    pub bases: Vec<GridPos>,
+    pub occupied: Vec<bool>,
 }
 
 impl Grid {
@@ -75,6 +106,9 @@ impl Grid {
     }
 
     fn index(&self, pos: &GridPos) -> usize {
+        if pos.x < 0 || pos.y < 0 || pos.x >= self.width || pos.y >= self.height {
+            return (self.width * self.height + 1) as usize;
+        }
         (pos.x + pos.y * self.width) as usize
     }
 
