@@ -112,7 +112,7 @@ impl Grid {
         (pos.x + pos.y * self.width) as usize
     }
 
-    fn index_to_pos(width: i32, idx: usize) -> GridPos {
+    pub fn index_to_pos(width: i32, idx: usize) -> GridPos {
         GridPos {
             x: idx as i32 % width,
             y: idx as i32 / width,

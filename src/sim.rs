@@ -8,13 +8,13 @@ use bevy_common_assets::ron::RonAssetPlugin;
 
 use crate::sim::defs::{MapDef, MapLoadingHandle};
 use crate::sim::grid::Grid;
-use crate::sim::path::{Path, find_path};
+use crate::sim::path::find_path;
 use crate::states::AppState;
 
 pub struct SimPlugin;
 
 mod defs;
-mod grid;
+pub mod grid;
 mod path;
 
 impl Plugin for SimPlugin {
@@ -25,7 +25,6 @@ impl Plugin for SimPlugin {
             Update,
             generate_grid_from_loaded_ron_map.run_if(in_state(AppState::MapLoading)),
         );
-        app.add_systems(Update, compute_and_print_path);
     }
 }
 
@@ -54,13 +53,5 @@ fn generate_grid_from_loaded_ron_map(
                 next_map_state.set(AppState::MapReady)
             }
         }
-    }
-}
-
-fn compute_and_print_path(mut commands: Commands, path: Option<Res<Path>>) {
-    if let Some(path_ref) = path {
-        println!("{:?}", path_ref.as_ref())
-    } else {
-        println!("NO PATH")
     }
 }

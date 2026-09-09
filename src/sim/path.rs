@@ -1,5 +1,5 @@
 use crate::sim::grid::{Grid, GridPos, TileKind};
-use std::collections::{HashMap, HashSet, VecDeque};
+use std::collections::{HashMap, VecDeque};
 
 use bevy::ecs::resource::Resource;
 use thiserror::Error;
@@ -39,7 +39,6 @@ pub fn find_path(grid: &Grid) -> Result<Path, PathError> {
                             }
                         }
                         TileKind::Base => {
-                            println!("{:?}", current_pos);
                             let mut path = vec![current_pos];
                             let mut path_head = current_pos;
                             loop {
