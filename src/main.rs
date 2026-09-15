@@ -18,7 +18,7 @@ use bevy::{
     window::{Window, WindowPlugin, WindowResolution},
 };
 
-use crate::{render::RendererPlugin, sim::SimPlugin, states::StatesPlugin};
+use crate::{input::InputPlugin, render::RendererPlugin, sim::SimPlugin, states::StatesPlugin};
 
 pub struct HelloPlugin;
 
@@ -40,5 +40,6 @@ fn main() {
         .add_plugins(StatesPlugin)
         .add_plugins(SimPlugin)
         .add_plugins(RendererPlugin)
+        .add_plugins(InputPlugin)
         .run();
 }
