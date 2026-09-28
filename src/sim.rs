@@ -15,7 +15,7 @@ pub struct SimPlugin;
 
 mod defs;
 pub mod grid;
-mod path;
+pub mod path;
 
 impl Plugin for SimPlugin {
     fn build(&self, app: &mut bevy::app::App) {

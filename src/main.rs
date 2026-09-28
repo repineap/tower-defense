@@ -29,7 +29,7 @@ fn main() {
                 .set(WindowPlugin {
                     primary_window: Some(Window {
                         title: "Hello World Tower Defense Game".into(),
-                        resolution: WindowResolution::new(1280, 720),
+                        resolution: WindowResolution::new(1280, 768),
                         ..default()
                     }),
                     ..default()
